@@ -30,6 +30,21 @@ socket.onmessage = function(event)
             }
         }
     }
+    let gameID = data["gameID"];
+    if (gameID != undefined)
+    {
+        console.log(gameID);
+        document.getElementById("gameIDTextField").innerHTML = "Game id: " + gameID;
+    }
+    let comunication = data["comunication"];
+    if (comunication != undefined)
+    {
+        console.log(comunication);
+        let node = document.createElement("LI");
+        var textnode = document.createTextNode(comunication);
+        node.appendChild(textnode);
+        let comTextField = document.getElementById("comunicationTextField").appendChild(node);
+    }
 }
 socket.onclose = function(event) {
     console.log("connection closed by server");
@@ -41,6 +56,11 @@ socket.onerror = function(error) {
 window.onload = function()
 {
     let circleToAdd = this.document.getElementById("circleToAdd");
+
+    // ---
+    circleToAdd.hidden = true;
+    // ---
+
     window.addEventListener('mousemove', function(event)
     {
         if (typeof circleToAdd !== undefined) {

@@ -26,9 +26,9 @@
  
 .circlePlacedTrigger {
     float: left;
-    width: 50px;
-    height: 50px;
-    margin: 25px;
+    width: 75px;
+    height: 75px;
+    margin-right: 25px;
     background-color: transparent;
 }
 

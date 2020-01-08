@@ -11,6 +11,7 @@ var game = function(gameID) {
         ["white", "white", "white", "white", "white", "white"],
         ["white", "white", "white", "white", "white", "white"]        
     ];
+    this.nextPlayerToMove = 1;
 }
 
 module.exports = game;
