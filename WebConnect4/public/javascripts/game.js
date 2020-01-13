@@ -1,7 +1,7 @@
 
 console.log("yolo connect4 rocks");
 
-const socket = new WebSocket("ws://localhost:3000");
+const socket = new WebSocket("ws://80.112.137.231:3000");
 socket.onopen = function(event) {
     console.log("connection opened");
     socket.send("hello server");
@@ -13,6 +13,7 @@ socket.onmessage = function(event)
     let gameState = data["gameState"];
     if (gameState != undefined)
     {
+        console.log("updating the circles");
         for (let rowIndex = 0; rowIndex < gameState.length; rowIndex++)
         {
             let rowColors = gameState[rowIndex];
@@ -26,18 +27,17 @@ socket.onmessage = function(event)
                 circle.classList.remove("yellow");
                 circle.classList.remove("white");
                 circle.classList.add(circleColor);
-                console.log(circleColor);
             }
         }
     }
     let win = data["win"];
     if (win == "red")
     {
-        alert("warning, red has won");
+        data["comunication"] = "Red wins";
     } 
     else if (win == "yellow")
     {
-        alert("warning, yellow has won");
+        data["comunication"] = "Yellow wins";
     }
     let gameID = data["gameID"];
     if (gameID != undefined)
@@ -67,7 +67,7 @@ window.onload = function()
     let circleToAdd = this.document.getElementById("circleToAdd");
 
     // ---
-    circleToAdd.hidden = true;
+    //circleToAdd.hidden = true;
     // ---
 
     window.addEventListener('mousemove', function(event)

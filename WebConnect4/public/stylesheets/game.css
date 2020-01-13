@@ -55,14 +55,13 @@
     background-color: red;
 }
 
-/*#circleAnimate
+#circleToAdd
 {
-    position: absolute;
-}*/
+    position: fixed;
+}
 
 
 p {
-    font-family: "Times New Roman", Times, serif;
     font-size: larger;
     color: blue;
 }

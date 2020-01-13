@@ -1,0 +1,51 @@
+@import "style.css";
+
+
+* {
+    color: blue;
+}
+
+.greetingBox {
+    width: 100%;
+    padding-top: 25px;
+}
+
+h1, h2, a {
+    text-align: center;
+}
+
+p {
+    font-size: large;
+}
+
+#playDiv {
+    width: 100%;
+    text-align: center;
+}
+
+.start-btn{
+    text-decoration: none;
+    font-size: 30pt;
+    font-family: 'Press Start 2p';
+    text-align: center;
+	display: inline-block;
+	margin:5px;
+    font-weight: bold;
+    padding: 10px 0 10px 10px ;
+    background-color: blue;
+    text-shadow: -1px -1px black, 1px 1px white;
+    color: red;
+    -webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	-o-border-radius: 7px;
+	border-radius: 7px;
+    box-shadow: 0 .2em blue; 
+    cursor: pointer;
+
+}
+
+.start-btn:active {
+	box-shadow: none;
+	position: relative;
+	top: .2em;
+}

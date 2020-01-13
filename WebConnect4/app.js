@@ -11,8 +11,11 @@ var app = express();
 
 app.use(express.static(__dirname + "/public"));
 
+var games = [];
+
+app.set('view engine', 'ejs')
 app.get("/", function(req, res) {
-    res.sendFile('splash.html', {root: __dirname + "/public"});
+    res.render('splash.ejs', { gamesInitialized: games.length });
 });
 
 var server = http.createServer(app);
@@ -20,8 +23,6 @@ var server = http.createServer(app);
 const wss = new websocket.Server({ server });
 
 var connectionsCount = 0;
-
-var games = [];
 
 wss.on("connection", function(socket) 
 {
@@ -79,13 +80,23 @@ wss.on("connection", function(socket)
 
             if (win != -1) 
             {
-                for (const playerSocket of game.sockets)
-                    playerSocket.send(JSON.stringify({gameState: game.state}));
-                game.reset();
+                for (const playerSocket of game.sockets) 
+                {
+                    playerSocket.send(JSON.stringify({gameState: game.state, win: win}));
+
+                    playerSocket.send(JSON.stringify({"comunication": "Restarting game in 3 seconds!"}));
+
+                    setTimeout(function() {
+                        game.reset();
+                        
+                        playerSocket.send(JSON.stringify({gameState: game.state}));        
+                    }, 3000);        
+                }
             }
             
             for (const playerSocket of game.sockets)
-                playerSocket.send(JSON.stringify({gameState: game.state, win: win}));
+                playerSocket.send(JSON.stringify({gameState: game.state}));
+
         }
     })
 
