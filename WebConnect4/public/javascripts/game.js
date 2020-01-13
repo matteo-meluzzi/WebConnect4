@@ -1,7 +1,7 @@
 
 console.log("yolo connect4 rocks");
 
-const socket = new WebSocket("ws://80.112.137.231:3000");
+const socket = new WebSocket("ws://localhost:3000");
 socket.onopen = function(event) {
     console.log("connection opened");
     socket.send("hello server");
@@ -29,6 +29,15 @@ socket.onmessage = function(event)
                 console.log(circleColor);
             }
         }
+    }
+    let win = data["win"];
+    if (win == "red")
+    {
+        alert("warning, red has won");
+    } 
+    else if (win == "yellow")
+    {
+        alert("warning, yellow has won");
     }
     let gameID = data["gameID"];
     if (gameID != undefined)

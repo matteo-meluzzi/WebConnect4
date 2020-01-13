@@ -21,7 +21,6 @@ const wss = new websocket.Server({ server });
 
 var connectionsCount = 0;
 
-var lastGameID = -1;
 var games = [];
 
 wss.on("connection", function(socket) 
@@ -74,22 +73,20 @@ wss.on("connection", function(socket)
                 return;
             }
 
-            game.nextPlayerToMove =  game.nextPlayerToMove == 0? 1: 0;;
             let rowIndex = parseInt(parts[1]);
-            let row = game.state[rowIndex];
-            for (let i = 0; i < row.length; i++)
-            {
-                if (row[i] == "white")
-                {
-                    row[i] = playerNumber == 0? "red": "yellow";
-                    break;
-                }
-            }
+            game.playerMovedAtRow(rowIndex);
 
-            let sockets = game.sockets;
-            for (const playerSocket of sockets) {
-                playerSocket.send(JSON.stringify({gameState: game.state}));
-            }    
+            let win = game.checkForWin();
+
+            if (win != -1) 
+            {
+                for (const playerSocket of game.sockets)
+                    playerSocket.send(JSON.stringify({gameState: game.state}));
+                game.reset();
+            }
+            
+            for (const playerSocket of game.sockets)
+                playerSocket.send(JSON.stringify({gameState: game.state, win: win}));
         }
     })
 
