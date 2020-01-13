@@ -10,6 +10,11 @@ var port = process.argv[2];
 var app = express();
 
 app.use(express.static(__dirname + "/public"));
+
+app.get("/", function(req, res) {
+    res.sendFile('splash.html', {root: __dirname + "/public"});
+});
+
 var server = http.createServer(app);
 
 const wss = new websocket.Server({ server });
@@ -28,15 +33,27 @@ wss.on("connection", function(socket)
     let playerNumber = 0;
     if (connectionsCount % 2 == 0) {
         game = new Game(gameIndex);
-        games.push({"game" : game, "sockets": [socket]});
+        game.sockets.push(socket);
+        games.push(game);
     }
     else {
-        game = games[games.length-1]["game"];
-        games[games.length-1]["sockets"].push(socket);
-        gameIndex = games.length-1;
+        game = games[games.length-1];
         playerNumber = 1;
+        if (game == undefined) // someone in a game with only one socket refreshes the page
+        {
+            console.log("double refresh");
+            game = new Game(gameIndex);
+            games.push(game);
+
+            connectionsCount--;
+            playerNumber = 0;
+        }
+        game.sockets.push(socket);
+        gameIndex = games.length-1;
     }
     socket.send(JSON.stringify({"gameID": gameIndex}));
+
+    console.log(games);
 
     connectionsCount++;
 
@@ -69,7 +86,7 @@ wss.on("connection", function(socket)
                 }
             }
 
-            let sockets = games[gameIndex]["sockets"];
+            let sockets = game.sockets;
             for (const playerSocket of sockets) {
                 playerSocket.send(JSON.stringify({gameState: game.state}));
             }    
@@ -82,7 +99,7 @@ wss.on("connection", function(socket)
             return;
 
         console.log("connection closed");
-        for (const playerSocket of games[gameIndex]["sockets"]) 
+        for (const playerSocket of game.sockets) 
         {
             if (socket != playerSocket) {
                 playerSocket.send(JSON.stringify({"comunication": "the other player rage quitted, refresh page to play again"}))

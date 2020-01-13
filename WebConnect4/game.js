@@ -12,6 +12,7 @@ var game = function(gameID) {
         ["white", "white", "white", "white", "white", "white"]        
     ];
     this.nextPlayerToMove = 1;
+    this.sockets = [];
 }
 
 module.exports = game;
