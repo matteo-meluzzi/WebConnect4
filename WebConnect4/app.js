@@ -65,11 +65,10 @@ wss.on("connection", function(socket)
         let parts = messageString.split(" ");
         if (parts[0] == "clicked")
         {
-            //console.log(`row ${parts[1]} was clicked`)
-
             if (playerNumber != game.nextPlayerToMove)
             {
-                socket.send(JSON.stringify({"comunication": "it is not your turn!"}));
+                let insult = ["dufust", "dummy", "douche", "wanker", "twat", "andy", "pirletta"];
+                socket.send(JSON.stringify({"comunication": `it's not your turn, ${insult[Math.floor(Math.random()*insult.length)]}!`}));
                 return;
             }
 
