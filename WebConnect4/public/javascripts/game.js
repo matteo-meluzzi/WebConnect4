@@ -1,7 +1,7 @@
 
 console.log("yolo connect4 rocks");
 
-const socket = new WebSocket("ws://localhost:3000");
+const socket = new WebSocket("ws://80.112.137.231:3000");
 socket.onopen = function(event) {
     console.log("connection opened");
     socket.send("hello server");
