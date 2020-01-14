@@ -1,7 +1,7 @@
 //@ts-check
 
 function Game(gameID) {
-    this.id = gameID;
+    this.index = gameID;
     this.state = [
         ["white", "white", "white", "white", "white", "white"],
         ["white", "white", "white", "white", "white", "white"],
@@ -17,8 +17,6 @@ function Game(gameID) {
 
 Game.prototype.checkForWin = function() 
 {
-    console.log("game: " + this);
-    console.log("state: " + this.state);
     for (let x = 0; x < this.state.length; x++)
     {
         for (let y = 0; y < this.state[0].length; y++)

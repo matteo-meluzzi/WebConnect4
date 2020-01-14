@@ -4,6 +4,8 @@ var express = require("express");
 var http = require("http");
 var websocket = require("ws");
 
+const fs = require("fs");
+
 var Game = require("./game");
 
 var port = process.argv[2];
@@ -11,55 +13,54 @@ var app = express();
 
 app.use(express.static(__dirname + "/public"));
 
-var games = [];
+var fileContents = fs.readFileSync('gamesCount.txt');
+var gamesCount = 0;
+if (fileContents != null){
+    let json = JSON.parse(fileContents.toString());
+    console.log(json);
+    gamesCount = json["gamesCount"];
+}
+if (gamesCount == undefined)
+    gamesCount = 0;
 
 app.set('view engine', 'ejs')
 app.get("/", function(req, res) {
-    res.render('splash.ejs', { gamesInitialized: games.length });
+    res.render('splash.ejs', { gamesInitialized: gamesCount });
 });
 
 var server = http.createServer(app);
 
 const wss = new websocket.Server({ server });
 
-var connectionsCount = 0;
+var gameToJoin = null;
 
 wss.on("connection", function(socket) 
 {
     console.log("connection");
     
-    let game = undefined;
-    let gameIndex = games.length;
+    let game = null;
     let playerNumber = 0;
-    if (connectionsCount % 2 == 0) {
-        game = new Game(gameIndex);
+    if (gameToJoin == null || gameToJoin.sockets.length == 2) {
+        game = new Game(gamesCount);
+        gamesCount++;
+        fs.writeFile("gamesCount.txt", JSON.stringify({"gamesCount": gamesCount}), (err) => {
+            if (err)
+                console.log(err);
+        });
         game.sockets.push(socket);
-        games.push(game);
+        gameToJoin = game;
     }
     else {
-        game = games[games.length-1];
+        game = gameToJoin;
         playerNumber = 1;
-        if (game == undefined) // someone in a game with only one socket refreshes the page
-        {
-            console.log("double refresh");
-            game = new Game(gameIndex);
-            games.push(game);
-
-            connectionsCount--;
-            playerNumber = 0;
-        }
         game.sockets.push(socket);
-        gameIndex = games.length-1;
     }
-    socket.send(JSON.stringify({"gameID": gameIndex}));
-
-    console.log(games);
-
-    connectionsCount++;
+    console.log(game);
+    socket.send(JSON.stringify({"gameID": game.index, "playerColor": (playerNumber == 0? "red": "yellow"), "playerNumber": playerNumber}));
 
     socket.on("message", function(message) 
     {
-        if (games[gameIndex] == undefined)
+        if (game == null)
             return;
 
         let messageString = String(message);
@@ -102,7 +103,7 @@ wss.on("connection", function(socket)
 
     socket.on("close", function(closingCode)
     {
-        if (games[gameIndex] == undefined)
+        if (game == null)
             return;
 
         console.log("connection closed");
@@ -114,7 +115,9 @@ wss.on("connection", function(socket)
                 playerSocket.send(JSON.stringify({"comunication": "hasta luego"}));
             }
         }
-        games[gameIndex] = undefined;
+        if (gameToJoin == game)
+            gameToJoin = null;
+        game = null;
     });
 });
 

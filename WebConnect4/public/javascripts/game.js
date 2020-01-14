@@ -13,6 +13,8 @@ socket.onmessage = function(event)
     let gameState = data["gameState"];
     if (gameState != undefined)
     {
+        let circleToAdd = document.getElementById("circleToAdd");
+        circleToAdd.hidden = !circleToAdd.hidden;
         console.log("updating the circles");
         for (let rowIndex = 0; rowIndex < gameState.length; rowIndex++)
         {
@@ -44,6 +46,22 @@ socket.onmessage = function(event)
     {
         console.log(gameID);
         document.getElementById("gameIDTextField").innerHTML = "Game id: " + gameID;
+
+        let playerColor = data["playerColor"];
+        if (playerColor != undefined)
+        {
+            let circleToAdd = document.getElementById("circleToAdd");
+            circleToAdd.classList.remove("yellow");
+            circleToAdd.classList.remove("red");
+            circleToAdd.classList.add(playerColor);
+        }
+
+        let playerNumber = data["playerNumber"];
+        if (playerNumber == 0)
+        {
+            let circleToAdd = document.getElementById("circleToAdd");
+            circleToAdd.hidden = true;
+        }
     }
     let comunication = data["comunication"];
     if (comunication != undefined)
@@ -52,8 +70,9 @@ socket.onmessage = function(event)
         let node = document.createElement("LI");
         var textnode = document.createTextNode(comunication);
         node.appendChild(textnode);
-        let comTextField = document.getElementById("comunicationTextField").appendChild(node);
+        document.getElementById("comunicationTextField").appendChild(node);
     }
+    
 }
 socket.onclose = function(event) {
     console.log("connection closed by server");
@@ -88,17 +107,6 @@ window.onload = function()
          {
             console.log("clicked " + i);
             socket.send("clicked " + i);
-            /*let row = document.getElementById("row" + i);
-            let children = row.children;
-            for (let i = 0; i < children.length; i++)
-            {
-                let makeRed = setTimeout(function() {
-                    children[i].classList.add("red");
-                }, 1000*i);
-                let makeWhite = setTimeout(function() {
-                    children[i].classList.remove("red");
-                }, 1000*(i+1))
-            }*/
         }
     }    
 }
