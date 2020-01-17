@@ -72,7 +72,13 @@ socket.onmessage = function(event)
         node.appendChild(textnode);
         document.getElementById("comunicationTextField").appendChild(node);
     }
-    
+    let scores = data["scores"];
+    if (scores != undefined && scores.length > 1)
+    {
+        console.log("scores" + scores);
+        let scoresTextField = document.getElementById("scoresTextField");
+        scoresTextField.innerHTML = "score RED: " + scores[0] + " YELLOW: " + scores[1];
+    }
 }
 socket.onclose = function(event) {
     console.log("connection closed by server");

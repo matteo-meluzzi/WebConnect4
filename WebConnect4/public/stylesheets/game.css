@@ -2,7 +2,7 @@
 
 #boardContainer {
     position: absolute;
-    padding: 100px;
+    padding: 10px;
 }
 
 #board 
@@ -63,4 +63,9 @@
 p {
     font-size: larger;
     color: blue;
+}
+
+#comunicationTextField 
+{
+    float: right;
 }

@@ -56,7 +56,7 @@ wss.on("connection", function(socket)
         game.sockets.push(socket);
     }
     console.log(game);
-    socket.send(JSON.stringify({"gameID": game.index, "playerColor": (playerNumber == 0? "red": "yellow"), "playerNumber": playerNumber}));
+    socket.send(JSON.stringify({"gameID": game.id, "playerColor": (playerNumber == 0? "red": "yellow"), "playerNumber": playerNumber}));
 
     socket.on("message", function(message) 
     {
@@ -81,6 +81,7 @@ wss.on("connection", function(socket)
 
             if (win != -1) 
             {
+                game.scores[playerNumber] += 1;
                 for (const playerSocket of game.sockets) 
                 {
                     playerSocket.send(JSON.stringify({gameState: game.state, win: win}));
@@ -90,7 +91,7 @@ wss.on("connection", function(socket)
                     setTimeout(function() {
                         game.reset();
                         
-                        playerSocket.send(JSON.stringify({gameState: game.state}));        
+                        playerSocket.send(JSON.stringify({gameState: game.state, "scores": game.scores}));        
                     }, 3000);        
                 }
             }

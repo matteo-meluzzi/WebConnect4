@@ -1,7 +1,7 @@
 //@ts-check
 
 function Game(gameID) {
-    this.index = gameID;
+    this.id = gameID;
     this.state = [
         ["white", "white", "white", "white", "white", "white"],
         ["white", "white", "white", "white", "white", "white"],
@@ -13,6 +13,7 @@ function Game(gameID) {
     ];
     this.nextPlayerToMove = 1;
     this.sockets = [];
+    this.scores = [0, 0];
 }
 
 Game.prototype.checkForWin = function() 
