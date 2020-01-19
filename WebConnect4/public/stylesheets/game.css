@@ -26,7 +26,7 @@ body {
          -o-animation: fadein 5s; /* Opera < 12.1 */
             animation: fadein 5s;
 
-    z-index: 100;
+    z-index: 1;
     clear: both;
     border-radius: 10%;
     border-color: cornflowerblue;
@@ -47,7 +47,31 @@ body {
     position: absolute;
     z-index: -100;
 }
- 
+
+@keyframes animateMatteo {
+    0% {left: 0%; top: 80%;}
+    25% {left: 0%; top: 0%;}
+    50% {left: 50%; top: 50%;}
+    75% {left: 80%; top: 0%;}
+    100% {left: 80%; top: 80%;}
+}
+#photoMatteo {
+    position: fixed;
+    border-radius: 50%;
+    z-index: 10;
+    width: 150px;
+    animation-name: animateMatteo;
+    animation-duration: 2.5s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#secretButton {
+    height: 50px;
+    width: 50px;
+    float: right;
+}
+
 .circlePlacedTrigger {
     float: left;
     width: 100px;

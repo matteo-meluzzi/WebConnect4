@@ -89,6 +89,11 @@ socket.onerror = function(error) {
 
 window.onload = function()
 {
+    document.getElementById("photoMatteo").hidden = true;
+    document.getElementById("secretButton").addEventListener("click", function() 
+    {
+        document.getElementById("photoMatteo").hidden = !document.getElementById("photoMatteo").hidden;
+    });
     let circleToAdd = this.document.getElementById("circleToAdd");
 
     // ---
