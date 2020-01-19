@@ -1,12 +1,31 @@
 @import "style.css";
 
+
+body {
+    height: 100%;
+    background-color: #1fc8db;
+    background-image: linear-gradient(to bottom right, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
+    color: white;
+    opacity: 0.95;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+
 #boardContainer {
-    position: absolute;
+    position: absolute ;
     padding: 10px;
 }
 
-#board 
-{
+
+
+#board {
+    -webkit-animation: fadein 5s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 5s; /* Firefox < 16 */
+        -ms-animation: fadein 5s; /* Internet Explorer */
+         -o-animation: fadein 5s; /* Opera < 12.1 */
+            animation: fadein 5s;
+
     z-index: 100;
     clear: both;
     border-radius: 10%;
@@ -17,6 +36,11 @@
     height: 500px;
     padding-top: 25px;
     background-color: blue;
+}
+
+.row:hover{
+    border-radius: 10%;
+    background: rgb(16, 16, 253);
 }
 
 #circleToAdd {
@@ -44,15 +68,15 @@
 }
 
 .white {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.897);
 }
 
 .yellow {
-    background-color: yellow;
+    background-color: rgba(255, 255, 0, 0.76);
 }
 
 .red {
-    background-color: red;
+    background-color: rgba(255, 0, 0, 0.747);
 }
 
 #circleToAdd
@@ -68,4 +92,27 @@ p {
 #comunicationTextField 
 {
     float: right;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
