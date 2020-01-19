@@ -60,6 +60,7 @@ wss.on("connection", function(socket)
 
     socket.on("message", function(message) 
     {
+        console.log(message);
         if (game == null)
             return;
 

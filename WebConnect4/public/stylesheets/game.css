@@ -17,9 +17,8 @@ body {
     padding: 10px;
 }
 
-
-
 #board {
+    position: absolute;
     -webkit-animation: fadein 5s; /* Safari, Chrome and Opera > 12.1 */
        -moz-animation: fadein 5s; /* Firefox < 16 */
         -ms-animation: fadein 5s; /* Internet Explorer */
@@ -40,7 +39,7 @@ body {
 
 .row:hover{
     border-radius: 10%;
-    background: rgb(16, 16, 253);
+    background: rgb(79, 79, 253);
 }
 
 #circleToAdd {
@@ -72,12 +71,16 @@ body {
     float: right;
 }
 
-.circlePlacedTrigger {
+/*.circlePlacedTrigger {
     float: left;
     width: 100px;
-    height: 75px;
-    background-color: transparent;
+    height: 575px;
+    background-color: red;
 }
+
+.circlePlacedTrigger:nth-of-type(n) {
+    left: 100*n;
+}*/
 
 .row {
     float: left;
