@@ -9,11 +9,34 @@ function Game(gameID) {
         ["white", "white", "white", "white", "white", "white"],
         ["white", "white", "white", "white", "white", "white"],
         ["white", "white", "white", "white", "white", "white"],
-        ["white", "white", "white", "white", "white", "white"]        
+        ["white", "white", "white", "white", "white", "white"]            
     ];
     this.nextPlayerToMove = 1;
     this.sockets = [];
     this.scores = [0, 0];
+    this.circlesPlacedNumber = 0;
+}
+
+Game.prototype.checkForFull = function(columnIndex)
+{
+    let col = this.state[columnIndex];
+    if (col == undefined)
+        return;
+    console.log(col);
+
+    for (let i = 0; i < col.length; i++) {
+        if (col[i] == "white") {
+            console.log("returning false it's not full")
+            return false;
+        }
+    }
+    return true;
+}
+
+Game.prototype.checkForDraw = function()
+{
+    console.log(this.circlesPlacedNumber + " : " + this.state.length*this.state[0].length);
+    return this.circlesPlacedNumber >= this.state.length*this.state[0].length;
 }
 
 Game.prototype.checkForWin = function() 
@@ -42,6 +65,7 @@ Game.prototype.checkForWin = function()
 
 Game.prototype.reset = function()
 {
+    this.circlesPlacedNumber = 0;
     this.state = [
         ["white", "white", "white", "white", "white", "white"],
         ["white", "white", "white", "white", "white", "white"],

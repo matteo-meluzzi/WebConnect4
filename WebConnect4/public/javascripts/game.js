@@ -1,7 +1,7 @@
 
 console.log("yolo connect4 rocks");
 
-const socket = new WebSocket("ws://localhost:3000");
+const socket = new WebSocket("ws://192.168.0.100:3000");
 socket.onopen = function(event) {
     console.log("connection opened");
     socket.send("hello server");
@@ -100,7 +100,7 @@ window.onload = function()
     //circleToAdd.hidden = true;
     // ---
 
-    window.addEventListener('mousemove', function(event)
+    /*window.addEventListener('mousemove', function(event)
     {
         if (typeof circleToAdd !== undefined) {
             circleToAdd.style.left = (event.clientX - 50) + "px";
@@ -108,7 +108,7 @@ window.onload = function()
         } else {
             this.console.log("circle to add is undefined");
         }
-    }, false);
+    }, false);*/
 
     let triggers = this.document.getElementsByClassName("circlePlacedTrigger");
     this.console.log(triggers);

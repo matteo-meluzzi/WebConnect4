@@ -27,6 +27,9 @@ app.set('view engine', 'ejs')
 app.get("/", function(req, res) {
     res.render('splash.ejs', { gamesInitialized: gamesCount });
 });
+app.get("/game", function(req, res) {
+    res.sendFile(__dirname + '/public/game.html');
+});
 
 var server = http.createServer(app);
 
@@ -70,13 +73,36 @@ wss.on("connection", function(socket)
         {
             if (playerNumber != game.nextPlayerToMove)
             {
-                let insult = ["dufust", "dummy", "douche", "wanker", "twat", "andy", "pirletta"];
-                socket.send(JSON.stringify({"comunication": `it's not your turn, ${insult[Math.floor(Math.random()*insult.length)]}!`}));
+                let nickname = ["luca", "burn!", "babbuino", "pirletta", "wait.."];
+                socket.send(JSON.stringify({"comunication": `it's not your turn, ${nickname[Math.floor(Math.random()*nickname.length)]}!`}));
                 return;
             }
 
             let rowIndex = parseInt(parts[1]);
-            game.playerMovedAtRow(rowIndex);
+            if (game.checkForFull(rowIndex) == false) {
+                game.playerMovedAtRow(rowIndex);
+            }
+            else {
+                socket.send(JSON.stringify({"comunication": "That one's full"}));
+                return;
+            }
+        
+            game.circlesPlacedNumber++;
+            let draw = game.checkForDraw();
+            if (draw)
+            {
+                for (const playerSocket of game.sockets) 
+                {
+                    playerSocket.send(JSON.stringify({"comunication": "It's a draw!"}));
+                    playerSocket.send(JSON.stringify({"comunication": "Restarting game in 3 seconds!"}));
+                    setTimeout(function() {
+                        game.reset();
+                        playerSocket.send(JSON.stringify({gameState: game.state}));
+                    }, 3000);
+                    playerSocket.send(JSON.stringify({gameState: game.state}));
+                }
+                return;
+            }
 
             let win = game.checkForWin();
 
@@ -95,7 +121,9 @@ wss.on("connection", function(socket)
                         playerSocket.send(JSON.stringify({gameState: game.state, "scores": game.scores}));        
                     }, 3000);        
                 }
+                return;
             }
+            
             
             for (const playerSocket of game.sockets)
                 playerSocket.send(JSON.stringify({gameState: game.state}));
