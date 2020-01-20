@@ -96,11 +96,11 @@ body {
 }
 
 .yellow {
-    background-color: rgba(255, 255, 0, 0.76);
+    background-color: yellow;
 }
 
 .red {
-    background-color: rgba(255, 0, 0, 0.747);
+    background-color: red;
 }
 
 #circleToAdd {

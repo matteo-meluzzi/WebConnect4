@@ -1,12 +1,12 @@
 
 console.log("yolo connect4 rocks");
 
-var coinAudio = new Audio("http://localhost:3000/sounds/coinMario.ogg");
-var secretAudio = new Audio("http://localhost:3000/sounds/secretSound.wav");
-let audioBack = new Audio('http://localhost:3000/sounds/webconnect4backmusic.wav');
-let audioError = new Audio('http://localhost:3000/sounds/error.mp3');
+var coinAudio = new Audio("http://80.112.137.231:3000/sounds/coinMario.ogg");
+var secretAudio = new Audio("http://80.112.137.231:3000/sounds/secretSound.wav");
+let audioBack = new Audio('http://80.112.137.231:3000/sounds/webconnect4backmusic.wav');
+let audioError = new Audio('http://80.112.137.231:3000/sounds/error.mp3');
 
-const socket = new WebSocket("ws://192.168.0.100:3000");
+const socket = new WebSocket("ws://80.112.137.231:3000");
 socket.onopen = function(event) {
     console.log("connection opened");
     socket.send("hello server");
@@ -99,7 +99,7 @@ socket.onerror = function(error) {
 
 window.onload = function()
 {
-    let openingSound = new Audio('http://localhost:3000/sounds/eaSports.mp3');
+    let openingSound = new Audio('http://80.112.137.231:3000/sounds/eaSports.mp3');
     openingSound.play()
     openingSound.onended = function() {
         audioBack.play();
