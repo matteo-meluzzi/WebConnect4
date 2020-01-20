@@ -135,3 +135,9 @@ window.onload = function()
         }
     }    
 }
+
+window.onresize = function() 
+{
+    console.log(window.innerWidth);
+    document.getElementById("windowSmallWarning").hidden = window.innerWidth > 1250;
+}
