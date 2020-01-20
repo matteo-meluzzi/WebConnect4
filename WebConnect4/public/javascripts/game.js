@@ -109,6 +109,8 @@ window.onload = function()
 
     secretAudio.loop = true;
 
+    document.getElementById("windowSmallWarning").hidden = window.innerWidth > 1250;
+
     document.getElementById("photoMatteo").hidden = true;
     document.getElementById("secretButton").addEventListener("click", function() 
     {
