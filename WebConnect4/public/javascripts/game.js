@@ -1,6 +1,11 @@
 
 console.log("yolo connect4 rocks");
 
+var coinAudio = new Audio("http://localhost:3000/sounds/coinMario.ogg");
+var secretAudio = new Audio("http://localhost:3000/sounds/secretSound.wav");
+let audioBack = new Audio('http://localhost:3000/sounds/webconnect4backmusic.wav');
+let audioError = new Audio('http://localhost:3000/sounds/error.mp3');
+
 const socket = new WebSocket("ws://192.168.0.100:3000");
 socket.onopen = function(event) {
     console.log("connection opened");
@@ -13,6 +18,7 @@ socket.onmessage = function(event)
     let gameState = data["gameState"];
     if (gameState != undefined)
     {
+        coinAudio.play();
         let circleToAdd = document.getElementById("circleToAdd");
         circleToAdd.hidden = !circleToAdd.hidden;
         console.log("updating the circles");
@@ -67,6 +73,10 @@ socket.onmessage = function(event)
     if (comunication != undefined)
     {
         console.log(comunication);
+        audioError.play();
+
+        if (comunication.includes("not your turn"))
+            audioError.play();
         let node = document.createElement("LI");
         var textnode = document.createTextNode(comunication);
         node.appendChild(textnode);
@@ -89,26 +99,29 @@ socket.onerror = function(error) {
 
 window.onload = function()
 {
+    let openingSound = new Audio('http://localhost:3000/sounds/eaSports.mp3');
+    openingSound.play()
+    openingSound.onended = function() {
+        audioBack.play();
+    }
+
+    audioBack.loop = true;
+
+    secretAudio.loop = true;
+
     document.getElementById("photoMatteo").hidden = true;
     document.getElementById("secretButton").addEventListener("click", function() 
     {
         document.getElementById("photoMatteo").hidden = !document.getElementById("photoMatteo").hidden;
-    });
-    let circleToAdd = this.document.getElementById("circleToAdd");
-
-    // ---
-    //circleToAdd.hidden = true;
-    // ---
-
-    /*window.addEventListener('mousemove', function(event)
-    {
-        if (typeof circleToAdd !== undefined) {
-            circleToAdd.style.left = (event.clientX - 50) + "px";
-            circleToAdd.style.top = (event.clientY - 50) + "px";
-        } else {
-            this.console.log("circle to add is undefined");
+        if (secretAudio.paused) {
+            audioBack.pause();
+            secretAudio.play();
         }
-    }, false);*/
+        else {
+            audioBack.play();
+            secretAudio.pause();
+        }
+    });
 
     let triggers = this.document.getElementsByClassName("circlePlacedTrigger");
     this.console.log(triggers);
