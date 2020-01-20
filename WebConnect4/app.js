@@ -3,6 +3,7 @@
 var express = require("express");
 var http = require("http");
 var websocket = require("ws");
+var cookieParser = require('cookie-parser');
 
 const fs = require("fs");
 
@@ -11,7 +12,10 @@ var Game = require("./game");
 var port = process.argv[2];
 var app = express();
 
+var startTime = Date.now();
+
 app.use(express.static(__dirname + "/public"));
+app.use(cookieParser());
 
 var fileContents = fs.readFileSync('gamesCount.txt');
 var gamesCount = 0;
@@ -25,9 +29,19 @@ if (gamesCount == undefined)
 
 app.set('view engine', 'ejs')
 app.get("/", function(req, res) {
-    res.render('splash.ejs', { gamesInitialized: gamesCount });
+    let connectionsNumber = req.cookies.connectionsNumber;
+    if (connectionsNumber != undefined)
+        res.cookie("connectionsNumber", parseInt(connectionsNumber)+1, {maxAge: 1000*60*60*24*365*10});
+    else
+        res.cookie("connectionsNumber", 1, {maxAge: 1000*60*60*24*365*10});
+    res.render('splash.ejs', { gamesInitialized: gamesCount, serverUpTime: Math.floor((Date.now() - startTime)/1000)});
 });
 app.get("/game", function(req, res) {
+    let connectionsNumber = req.cookies.connectionsNumber;
+    if (connectionsNumber != undefined)
+        res.cookie("connectionsNumber", parseInt(connectionsNumber)+1, {maxAge: 1000*60*60*24*365*10});
+    else
+        res.cookie("connectionsNumber", 1, {maxAge: 1000*60*60*24*365*10});
     res.sendFile(__dirname + '/public/game.html');
 });
 

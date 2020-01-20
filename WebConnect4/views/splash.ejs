@@ -19,8 +19,19 @@
             Statistics:
             <ul>
                 <li>Games played so far: <%= gamesInitialized %></li>
-                <li>Players who have said this is the best game they have ever played: 4040</li>
+                <li>Server up time: <%= serverUpTime %> seconds</li>
+                <li>You have connected <span id="connectionsNumber"></span> times</li>
             </ul>
         </p>
     </main>
+    <script>
+        let cookies = document.cookie.split("; ");
+        for (const cookie of cookies) {
+            let connectionsNumber = cookie.split("=");
+            if (connectionsNumber[0] == "connectionsNumber")
+            {
+                document.getElementById("connectionsNumber").innerHTML = connectionsNumber[1];
+            }
+        }
+    </script>
 </html>
