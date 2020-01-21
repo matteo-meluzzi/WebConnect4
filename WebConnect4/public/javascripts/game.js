@@ -109,7 +109,7 @@ window.onload = function()
 
     secretAudio.loop = true;
 
-    document.getElementById("windowSmallWarning").hidden = window.innerWidth > 1250;
+    //document.getElementById("windowSmallWarning").hidden = window.innerWidth > 1250;
 
     document.getElementById("photoMatteo").hidden = true;
     document.getElementById("secretButton").addEventListener("click", function() 
@@ -138,8 +138,8 @@ window.onload = function()
     }    
 }
 
-window.onresize = function() 
+/*window.onresize = function() 
 {
     console.log(window.innerWidth);
     document.getElementById("windowSmallWarning").hidden = window.innerWidth > 1250;
-}
+}*/
