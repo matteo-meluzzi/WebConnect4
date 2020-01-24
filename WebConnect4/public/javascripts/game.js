@@ -126,7 +126,7 @@ window.onload = function()
     });
 
     let triggers = this.document.getElementsByClassName("circlePlacedTrigger");
-    this.console.log(triggers);
+    console.log(triggers);
     for (let i = 0; i < triggers.length; i++)
     {
         let trigger = triggers[i];

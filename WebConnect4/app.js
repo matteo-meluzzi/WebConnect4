@@ -37,11 +37,6 @@ app.get("/", function(req, res) {
     res.render('splash.ejs', { gamesInitialized: gamesCount, serverUpTime: Math.floor((Date.now() - startTime)/1000)});
 });
 app.get("/game", function(req, res) {
-    let connectionsNumber = req.cookies.connectionsNumber;
-    if (connectionsNumber != undefined)
-        res.cookie("connectionsNumber", parseInt(connectionsNumber)+1, {maxAge: 1000*60*60*24*365*10});
-    else
-        res.cookie("connectionsNumber", 1, {maxAge: 1000*60*60*24*365*10});
     res.sendFile(__dirname + '/public/game.html');
 });
 
@@ -137,7 +132,6 @@ wss.on("connection", function(socket)
                 }
                 return;
             }
-            
             
             for (const playerSocket of game.sockets)
                 playerSocket.send(JSON.stringify({gameState: game.state}));
